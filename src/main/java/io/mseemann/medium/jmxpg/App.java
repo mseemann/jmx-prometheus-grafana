@@ -25,16 +25,17 @@ public class App {
         keyValues.put("Version", App.class.getPackage().getImplementationVersion());
         mbs.registerMBean(appInfo, new ObjectName("jmxpg.mbeans", keyValues));
 
-
         Requests getRequests = new Requests();
         mbs.registerMBean(getRequests, new ObjectName(GET_REQUESTS_O_NAME));
 
         Requests postRequests = new Requests();
         mbs.registerMBean(postRequests, new ObjectName(POST_REQUESTS_O_NAME));
 
+        // start a smal simulation
+        new Thread(new AppStateSimulation(appInfo)).start();
         new Thread(new RequestSimulation(getRequests, 50)).start();
         new Thread(new RequestSimulation(postRequests, 150)).start();
-        new Thread(new AppStateSimulation(appInfo)).start();
+
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> appInfo.setStatus("exited")));
 
