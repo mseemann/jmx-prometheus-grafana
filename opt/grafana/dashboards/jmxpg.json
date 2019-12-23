@@ -221,14 +221,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(msee_jmxpg_mbeans_requests_RequestCount{job=\"jmxpg\", verb=\"GET\"}[10s])",
+          "expr": "increase(msee_jmxpg_mbeans_requests_request_count{job=\"jmxpg\", verb=\"GET\"}[10s])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{instance}} - GETs",
           "refId": "A"
         },
         {
-          "expr": "increase(msee_jmxpg_mbeans_requests_RequestCount{job=\"jmxpg\", verb=\"POST\"}[10s])",
+          "expr": "increase(msee_jmxpg_mbeans_requests_request_count{job=\"jmxpg\", verb=\"POST\"}[10s])",
           "legendFormat": "{{instance}} - POSTs",
           "refId": "B"
         }

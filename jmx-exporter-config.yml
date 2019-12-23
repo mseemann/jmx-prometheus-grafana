@@ -1,6 +1,8 @@
 rules:
   - pattern: "jmxpg.mbeans<type=AppInfo, Version=([^:]+)><>Status: ([^:]+)"
     name: "msee_jmxpg_mbeans_app_info_status"
+    type: UNTYPED
+    help: "Version and status of the app. Status values: running, failed, starting and exited"
     value: 1
     labels:
       version: $1
@@ -8,5 +10,8 @@ rules:
 
   - pattern: "jmxpg.mbeans<type=Requests, verb=([^:]+)><>([^:]+)"
     name: "msee_jmxpg_mbeans_requests_$2"
+    help: "Number of request."
+    attrNameSnakeCase: true
+    type: COUNTER
     labels:
       verb: $1
