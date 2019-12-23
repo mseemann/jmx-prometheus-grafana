@@ -6,5 +6,7 @@ rules:
       version: $1
       status: $2
 
-  - pattern: "jmxpg.mbeans<type=Requests><>([^:]+)"
-    name: "msee_jmxpg_mbeans_requests_$1"
+  - pattern: "jmxpg.mbeans<type=Requests, verb=([^:]+)><>([^:]+)"
+    name: "msee_jmxpg_mbeans_requests_$2"
+    labels:
+      verb: $1

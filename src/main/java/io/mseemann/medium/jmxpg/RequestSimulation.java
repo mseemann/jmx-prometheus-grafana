@@ -8,16 +8,18 @@ import java.util.Random;
 public class RequestSimulation implements Runnable {
 
     private final Requests requests;
+    private final int randomBound;
 
-    public RequestSimulation(Requests requests) {
+    public RequestSimulation(Requests requests, int randomBound) {
         this.requests = requests;
+        this.randomBound = randomBound;
     }
 
     @Override
     @SneakyThrows
     public void run() {
         while (true) {
-            Thread.sleep(new Random().nextInt(50));
+            Thread.sleep(new Random().nextInt(randomBound));
             requests.newRequest();
         }
     }

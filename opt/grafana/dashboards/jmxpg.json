@@ -176,6 +176,9 @@
     {
       "aliasColors": {
         "host.docker.internal:8083": "semi-dark-orange",
+        "host.docker.internal:8083 - GETs": "semi-dark-orange",
+        "host.docker.internal:8083 - POSTs": "semi-dark-blue",
+        "{instance=\"host.docker.internal:8083\",job=\"jmxpg\",verb=\"POST\"}": "semi-dark-blue",
         "{instance=\"host.docker.internal:8083\",job=\"jmxpg\"}": "dark-yellow"
       },
       "bars": true,
@@ -218,11 +221,16 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(msee_jmxpg_mbeans_requests_RequestCount{job=\"jmxpg\"}[10s])",
+          "expr": "increase(msee_jmxpg_mbeans_requests_RequestCount{job=\"jmxpg\", verb=\"GET\"}[10s])",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} - GETs",
           "refId": "A"
+        },
+        {
+          "expr": "increase(msee_jmxpg_mbeans_requests_RequestCount{job=\"jmxpg\", verb=\"POST\"}[10s])",
+          "legendFormat": "{{instance}} - POSTs",
+          "refId": "B"
         }
       ],
       "thresholds": [],
