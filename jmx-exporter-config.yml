@@ -1,0 +1,10 @@
+rules:
+  - pattern: "jmxpg.mbeans<type=AppInfo, Version=([^:]+)><>Status: ([^:]+)"
+    name: "msee_jmxpg_mbeans_app_info_status"
+    value: 1
+    labels:
+      version: $1
+      status: $2
+
+  - pattern: "jmxpg.mbeans<type=Requests><>([^:]+)"
+    name: "msee_jmxpg_mbeans_requests_$1"

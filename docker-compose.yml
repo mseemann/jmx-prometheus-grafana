@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.15.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ${PWD}/opt/prometheus:/etc/prometheus/:ro
+
+  grafana:
+    image: grafana/grafana:6.5.2
+    ports:
+      - 3000:3000
+    volumes:
+      - ${PWD}/opt/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ${PWD}/opt/grafana/dashboards:/var/lib/grafana/dashboards:ro
+

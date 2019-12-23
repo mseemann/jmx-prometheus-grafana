@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'io.mseemann.medium'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'io.mseemann.medium.jmxpg.App',
+                'Implementation-Version': project.version.toString()
+        )
+    }
+}
