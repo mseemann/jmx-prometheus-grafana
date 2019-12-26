@@ -2,7 +2,7 @@ rules:
   - pattern: "jmxpg.mbeans<type=AppInfo, Version=([^:]+)><>Status: ([^:]+)"
     name: "msee_jmxpg_mbeans_app_info_status"
     type: UNTYPED
-    help: "Version and status of the app. Status values: running, failed, starting and exited"
+    help: "Version and status of the app. Status values: running, failed, starting and exited."
     value: 1
     labels:
       version: $1
