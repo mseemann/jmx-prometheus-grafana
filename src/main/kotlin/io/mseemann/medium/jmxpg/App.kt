@@ -14,26 +14,28 @@ const val POST_REQUESTS_O_NAME = "$NAMESPACE:type=Requests,verb=POST"
 
 fun main() {
 
-    val mbs = ManagementFactory.getPlatformMBeanServer()
-
-    val appInfo = AppInfo("starting")
-    val keyValues = Hashtable<String, String>()
-    keyValues["type"] = "AppInfo"
-    keyValues["Version"] = App::class.java.getPackage().implementationVersion ?: "n.n."
-    mbs.registerMBean(appInfo, ObjectName("jmxpg.mbeans", keyValues))
+    val appInfo = AppInfo()
 
     val getRequests = Requests()
-    getRequests.requestCount = 2
-    mbs.registerMBean(getRequests, ObjectName(GET_REQUESTS_O_NAME))
 
     val postRequests = Requests()
-    mbs.registerMBean(postRequests, ObjectName(POST_REQUESTS_O_NAME))
+
+    ManagementFactory.getPlatformMBeanServer().apply {
+
+        val keyValues = Hashtable<String, String>()
+        keyValues["type"] = "AppInfo"
+        keyValues["Version"] = App::class.java.getPackage().implementationVersion ?: "n.n."
+        registerMBean(appInfo, ObjectName(NAMESPACE, keyValues))
+
+        registerMBean(getRequests, ObjectName(GET_REQUESTS_O_NAME))
+        registerMBean(postRequests, ObjectName(POST_REQUESTS_O_NAME))
+    }
 
     // start a small simulation
     Thread(AppStateSimulation(appInfo)).start()
     Thread(RequestSimulation(getRequests, 50)).start()
     Thread(RequestSimulation(postRequests, 150)).start()
 
-    //Runtime.getRuntime().addShutdownHook(Thread(Runnable { appInfo.status = "exited" }))
+    // keep it running
     Thread.sleep(Int.MAX_VALUE.toLong())
 }

@@ -1,7 +1,7 @@
 package io.mseemann.medium.jmxpg.beans
 
 interface AppInfoMBean {
-    var status: String?
+    var status: String
 }
 
-class AppInfo(override var status: String?) : AppInfoMBean
+class AppInfo(override var status: String = "starting") : AppInfoMBean
