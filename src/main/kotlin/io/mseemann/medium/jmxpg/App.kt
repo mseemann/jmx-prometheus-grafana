@@ -1,8 +1,11 @@
 package io.mseemann.medium.jmxpg
 
-import io.mseemann.medium.jmxpg.beans.AppInfo
-import io.mseemann.medium.jmxpg.beans.Requests
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.management.ManagementFactory
+import java.time.Duration
+import java.util.*
 import javax.management.ObjectName
 
 const val NAMESPACE = "jmxpg.mbeans"
@@ -27,9 +30,27 @@ fun main() {
     }
 
     // start a small simulation
-    Thread(AppStateSimulation(appInfo)).start()
-    Thread(RequestSimulation(getRequests, 50)).start()
-    Thread(RequestSimulation(postRequests, 150)).start()
+
+    GlobalScope.launch {
+        while (true) {
+            delay(Duration.ofSeconds(10).toMillis())
+            appInfo.status = if (appInfo.status == "running") "failed" else "running"
+        }
+    }
+
+    GlobalScope.launch {
+        while (true) {
+            delay(Random().nextInt(50).toLong())
+            getRequests.requestCount++
+        }
+    }
+    
+    GlobalScope.launch {
+        while (true) {
+            delay(Random().nextInt(150).toLong())
+            postRequests.requestCount++
+        }
+    }
 
     // keep it running
     Thread.sleep(Int.MAX_VALUE.toLong())

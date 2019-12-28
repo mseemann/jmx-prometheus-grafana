@@ -1,4 +1,4 @@
-package io.mseemann.medium.jmxpg.beans
+package io.mseemann.medium.jmxpg
 
 interface AppInfoMBean {
     var status: String
