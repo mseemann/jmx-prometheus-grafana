@@ -5,12 +5,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.management.ManagementFactory
 import java.time.Duration
-import java.util.*
 import javax.management.ObjectName
+import kotlin.random.Random
 
 const val NAMESPACE = "jmxpg.mbeans"
-const val GET_REQUESTS_O_NAME = "$NAMESPACE:type=Requests,verb=GET"
-const val POST_REQUESTS_O_NAME = "$NAMESPACE:type=Requests,verb=POST"
 
 fun main() {
 
@@ -25,8 +23,8 @@ fun main() {
         val version = AppInfo::class.java.getPackage().implementationVersion ?: "n.n."
         registerMBean(appInfo, ObjectName("$NAMESPACE:type=AppInfo,version=$version"))
 
-        registerMBean(getRequests, ObjectName(GET_REQUESTS_O_NAME))
-        registerMBean(postRequests, ObjectName(POST_REQUESTS_O_NAME))
+        registerMBean(getRequests, ObjectName("$NAMESPACE:type=Requests,verb=GET"))
+        registerMBean(postRequests, ObjectName("$NAMESPACE:type=Requests,verb=POST"))
     }
 
     // start a small simulation
@@ -40,18 +38,18 @@ fun main() {
 
     GlobalScope.launch {
         while (true) {
-            delay(Random().nextInt(50).toLong())
+            delay(Random.nextLong(50))
             getRequests.requestCount++
         }
     }
-    
+
     GlobalScope.launch {
         while (true) {
-            delay(Random().nextInt(150).toLong())
+            delay(Random.nextLong(150))
             postRequests.requestCount++
         }
     }
 
     // keep it running
-    Thread.sleep(Int.MAX_VALUE.toLong())
+    Thread.sleep(Long.MAX_VALUE)
 }
