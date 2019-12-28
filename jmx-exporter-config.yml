@@ -1,5 +1,5 @@
 rules:
-  - pattern: "jmxpg.mbeans<type=AppInfo, Version=([^:]+)><>Status: ([^:]+)"
+  - pattern: "jmxpg.mbeans<type=AppInfo, version=([^:]+)><>Status: ([^:]+)"
     name: "msee_jmxpg_mbeans_app_info_status"
     type: UNTYPED
     help: "Version and status of the app. Status values: running, failed, starting and exited."
