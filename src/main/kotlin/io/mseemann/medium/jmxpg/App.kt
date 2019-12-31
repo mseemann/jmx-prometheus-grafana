@@ -1,8 +1,8 @@
 package io.mseemann.medium.jmxpg
 
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.management.ManagementFactory
 import java.time.Duration
 import javax.management.ObjectName
@@ -10,7 +10,7 @@ import kotlin.random.Random
 
 const val NAMESPACE = "jmxpg.mbeans"
 
-fun main() {
+fun main() = runBlocking {
 
     val appInfo = AppInfo()
 
@@ -27,29 +27,27 @@ fun main() {
         registerMBean(postRequests, ObjectName("$NAMESPACE:type=Requests,verb=POST"))
     }
 
-    // start a small simulation
-
-    GlobalScope.launch {
+    // start some simulations
+    val job = launch {
         while (true) {
             delay(Duration.ofSeconds(10).toMillis())
             appInfo.status = if (appInfo.status == "running") "failed" else "running"
         }
     }
 
-    GlobalScope.launch {
+    launch {
         while (true) {
             delay(Random.nextLong(50))
             getRequests.requestCount++
         }
     }
 
-    GlobalScope.launch {
+    launch {
         while (true) {
             delay(Random.nextLong(150))
             postRequests.requestCount++
         }
     }
 
-    // keep it running
-    Thread.sleep(Long.MAX_VALUE)
+    job.join()
 }
